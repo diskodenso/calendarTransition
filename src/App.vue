@@ -6,7 +6,13 @@
         <!--         <CalendarWeekAsList />
         <CalendarWeek /> -->
         <keep-alive>
-          <component :is="activeView" />
+          <transition
+            name="fade"
+            mode="out-in"
+            appear
+          >
+            <component :is="activeView" />
+          </transition>
         </keep-alive>
         <!-- Ende: Template für die Calendar-Week-Component -->
       </div>
@@ -29,7 +35,15 @@
           </button>
         </div>
         <!-- Anfang: Template für die Calendar-Settings-Component -->
-        <CalendarSettings v-if="displaySettings" />
+        <!-- <transition name="fade">
+          <CalendarSettings v-if="displaySettings" />
+        </transition> -->
+        <transition
+          enter-active-class="animate__animated animate__bounceInRight"
+          leave-active-class="animate__animated animate__bounceOutRight"
+        >
+          <CalendarSettings v-if="displaySettings" />
+        </transition>
         <!-- Ende: Template für die Calendar-Day-Component -->
       </div>
     </div>
@@ -84,9 +98,25 @@ export default {
 <style>
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import "~@fortawesome/fontawesome-free/css/all.min.css";
+@import "~animate.css/animate.min.css";
 
 .square {
   width: 40px;
   height: 40px;
+}
+/* transition fade*/
+/* hat die transition kein name attribut ist name automatisch "v" zb v-enter-from*/
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+/* wie lange dauert der fade*/
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.25s ease-out;
 }
 </style>
